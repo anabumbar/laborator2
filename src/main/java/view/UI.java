@@ -96,7 +96,7 @@ public class UI {
      * Adauga un student
      * @throws ValidationException daca datele studentul exista deja
      */
-    private void adaugaStudent() throws ValidationException {
+    public void adaugaStudent() throws ValidationException {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Introduceti id student: ");
         String idStudent = scanner.next();
