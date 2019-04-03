@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import domain.Student;
+import domain.Tema;
 import org.junit.Before;
 import org.junit.Test;
 import repository.NotaXMLRepo;
@@ -22,6 +23,7 @@ import view.UI;
 public class AppTest 
 {
     private StudentXMLRepo studentRepository;
+    private TemaXMLRepo temaRepository;
     private Service service;
 
     @Before
@@ -32,11 +34,10 @@ public class AppTest
         String filenameTema = "fisiere/Teme.xml";
         String filenameNota = "fisiere/Note.xml";
         this.studentRepository = new StudentXMLRepo(filenameStudent);
-        TemaXMLRepo temaXMLRepository = new TemaXMLRepo(filenameTema);
-        NotaValidator notaValidator = new NotaValidator(studentRepository, temaXMLRepository);
+        this.temaRepository = new TemaXMLRepo(filenameTema);
+        NotaValidator notaValidator = new NotaValidator(studentRepository, this.temaRepository);
         NotaXMLRepo notaXMLRepository = new NotaXMLRepo(filenameNota);
-        this.service = new Service(studentRepository, studentValidator, temaXMLRepository, temaValidator, notaXMLRepository, notaValidator);
-
+        this.service = new Service(studentRepository, studentValidator, this.temaRepository, temaValidator, notaXMLRepository, notaValidator);
     }
 
     /**
@@ -144,5 +145,33 @@ public class AppTest
         }
     }
 
+    @Test
+    public void addAssignment() {
+
+        Tema t = new Tema("102","Info", 3,1);
+        try {
+            this.service.addTema(t);
+            Tema t1 = this.service.findTema("102");
+            assertTrue(t == t1);
+        } catch (Exception e) {
+            assertEquals("Numar tema invalid!", e.getMessage().trim());
+
+        }
+        this.service.deleteTema("102");
+    }
+
+    @Test
+    public void addAssignment2() {
+
+        Tema t2 = new Tema("","Info", 3,1);
+        try {
+            this.service.addTema(t2);
+        } catch (Exception e) {
+            System.out.println("______");
+            assertEquals("Numar tema invalid!", e.getMessage().trim());
+
+        }
+
+    }
 
 }
