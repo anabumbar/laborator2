@@ -2,7 +2,6 @@ package laborator2;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import domain.Student;
 import domain.Tema;
@@ -15,7 +14,10 @@ import service.Service;
 import validation.NotaValidator;
 import validation.StudentValidator;
 import validation.TemaValidator;
-import view.UI;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * Unit test for simple App.
@@ -167,11 +169,93 @@ public class AppTest
         try {
             this.service.addTema(t2);
         } catch (Exception e) {
-            System.out.println("______");
             assertEquals("Numar tema invalid!", e.getMessage().trim());
 
+        }
+    }
+
+    @Test
+    public void addAssignment3() {
+        List<Tema> homeworks = StreamSupport.stream(temaRepository.findAll().spliterator(), false).collect(Collectors.toList());
+        int s = homeworks.size();
+        assertEquals(homeworks.size(), s);
+        temaRepository.save(new Tema("51", "Math", 3, 1));
+        homeworks = StreamSupport.stream(temaRepository.findAll().spliterator(), false).collect(Collectors.toList());
+        assertEquals(homeworks.size(), s+1);
+        this.service.deleteTema("51");
+    }
+
+    @Test
+    public void addAssignment4() {
+        Tema t = temaRepository.save(new Tema(null, "Ana", 3, 2));
+        assertEquals(t, null);
+    }
+
+    @Test
+    public void addAssignment5() {
+        try{
+             Tema negativeDeadline = this.service.addTema(new Tema("121", "mate", -1, 2));
+        }
+        catch (Exception e) {
+            assertEquals("Deadlineul trebuie sa fie intre 1-14.", e.getMessage().trim());
+
+        }
+    }
+
+    @Test
+    public void addAssignment6() {
+        try {
+            Tema t = this.service.addTema(new Tema("53", "", 3, 2));
+        }
+        catch (Exception e){
+            assertEquals("Descriere invalida!", e.getMessage().trim());
         }
 
     }
 
+    @Test
+    public void addAssignment7() {
+        try {
+            Tema t = this.service.addTema(new Tema("53", "Info", -3, 2));
+        }
+        catch (Exception e){
+            assertEquals("Deadlineul trebuie sa fie intre 1-14.", e.getMessage().trim());
+        }
+
+    }
+
+
+    @Test
+    public void addAssignment8() {
+        try {
+            Tema t = this.service.addTema(new Tema("53", "Info", 16, 2));
+        }
+        catch (Exception e){
+            assertEquals("Deadlineul trebuie sa fie intre 1-14.", e.getMessage().trim());
+        }
+
+    }
+
+    @Test
+    public void addAssignment9() {
+        try {
+            Tema t = this.service.addTema(new Tema("53", "Info", 4, -2));
+        }
+        catch (Exception e){
+            assertEquals("Saptamana primirii trebuie sa fie intre 1-14.", e.getMessage().trim());
+        }
+
+    }
+
+    @Test
+    public void addAssignment10() {
+        try {
+            Tema t = this.service.addTema(new Tema("53", "Info", 4, 17));
+        }
+        catch (Exception e){
+            assertEquals("Saptamana primirii trebuie sa fie intre 1-14.", e.getMessage().trim());
+        }
+
+    }
 }
+
