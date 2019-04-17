@@ -187,7 +187,7 @@ public class AppTest
 
     @Test
     public void addAssignment4() {
-        Tema t = temaRepository.save(new Tema(null, "Ana", 3, 2));
+        Tema t = temaRepository.save(new Tema(null, "Info", 3, 2));
         assertEquals(t, null);
     }
 
