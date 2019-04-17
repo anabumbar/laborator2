@@ -47,9 +47,10 @@ public class BigBangTest {
         List<Tema> homeworks = StreamSupport.stream(temaRepository.findAll().spliterator(), false).collect(Collectors.toList());
         int s = homeworks.size();
         assertEquals(homeworks.size(), s);
-        temaRepository.save(new Tema("55", "Math", 5, 1));
+        temaRepository.save(new Tema("56", "Math", 5, 1));
         homeworks = StreamSupport.stream(temaRepository.findAll().spliterator(), false).collect(Collectors.toList());
         assertEquals(homeworks.size(), s+1);
+        this.service.deleteTema("56");
     }
 
     @Test
@@ -57,9 +58,10 @@ public class BigBangTest {
         List<Student> students = StreamSupport.stream(studentRepository.findAll().spliterator(), false).collect(Collectors.toList());
         int s = students.size();
         assertEquals(students.size(), s);
-        studentRepository.save(new Student("300","Ana", 923,"ana@c."));
+        studentRepository.save(new Student("301","Ana", 923,"ana@c."));
         students = StreamSupport.stream(studentRepository.findAll().spliterator(), false).collect(Collectors.toList());
         assertEquals(students.size(), s+1);
+        this.service.deleteStudent("301");
     }
 
     @Test
@@ -67,12 +69,12 @@ public class BigBangTest {
         List<Nota> grades = StreamSupport.stream(notaRepository.findAll().spliterator(), false).collect(Collectors.toList());
         int s = grades.size();
         assertEquals(grades.size(), s);
-        notaRepository.save(new Nota("200","300","55", 7.5, LocalDate.of(2019,06,20)));
+        notaRepository.save(new Nota("201","301","56", 7.5, LocalDate.of(2019,06,20)));
         grades = StreamSupport.stream(notaRepository.findAll().spliterator(), false).collect(Collectors.toList());
         assertEquals(grades.size(), s+1);
-        this.service.deleteNota("200");
-        this.service.deleteTema("55");
-        this.service.deleteStudent("300");
+        this.service.deleteNota("201");
+        this.service.deleteTema("56");
+        this.service.deleteStudent("301");
 
     }
 
@@ -83,4 +85,20 @@ public class BigBangTest {
         addGrade();
     }
 
+    @Test
+    public void incremental1() {
+        addStudent();
+    }
+
+    @Test
+    public void incremental2() {
+        addStudent();
+        addAssignment();
+    }
+    @Test
+    public void incremental3() {
+        addStudent();
+        addAssignment();
+        addGrade();
+    }
 }
